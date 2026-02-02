@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
-import { Star, MapPin, Phone, Mail, Calendar, Shield, CreditCard, Clock, Home, Sparkles, ChevronDown, Smartphone } from 'lucide-react';
+import { Star, MapPin, Phone, Mail, Calendar, Shield, CreditCard, Clock, Home, Sparkles, ChevronDown, Smartphone, Instagram } from 'lucide-react';
 import beautyAppImage from '@/assets/images/beauty-1.png';
 import logo from '@/assets/images/logo.svg';
 import appleLogo from '@/assets/images/apple-logo.svg';
 import playStoreLogo from '@/assets/images/play-store.svg';
+import instagramLogo from '@/assets/images/instagram.png';
 
 export default function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -932,20 +933,20 @@ export default function App() {
                 📱 Booking is only available through our mobile app
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2">
+                <a href="https://app.beautyzix.com/" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2">
                   <img src={appleLogo} alt="App Store" className="h-8 w-8" />
                   <div className="text-left">
                     <div className="text-xs">Download on the</div>
                     <div className="text-lg">App Store</div>
                   </div>
-                </button>
-                <button className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2">
+                </a>
+                <a href="https://app.beautyzix.com/" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2">
                   <img src={playStoreLogo} alt="Google Play" className="h-7 w-7" />
                   <div className="text-left">
                     <div className="text-xs">GET IT ON</div>
                     <div className="text-lg">Google Play</div>
                   </div>
-                </button>
+                </a>
               </div>
             </div>
             <div className="flex-1">
@@ -1116,10 +1117,9 @@ export default function App() {
               <div className="mt-6">
                 <h4 className="mb-3">Follow Us</h4>
                 <div className="flex gap-4 text-2xl">
-                  <a href="#" className="hover:scale-110 transition-transform">📘</a>
-                  <a href="#" className="hover:scale-110 transition-transform">📷</a>
-                  <a href="#" className="hover:scale-110 transition-transform">🐦</a>
-                  <a href="#" className="hover:scale-110 transition-transform">💼</a>
+                  <a href="#" className="hover:scale-110 transition-transform hover:text-pink-600">
+                    <img src={instagramLogo} alt="Instagram" className="w-8 h-8" />
+                  </a>
                 </div>
               </div>
             </div>
