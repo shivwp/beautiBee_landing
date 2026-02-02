@@ -1,1 +1,1 @@
-# beautiBee_app
+# beautiBee_Landing
