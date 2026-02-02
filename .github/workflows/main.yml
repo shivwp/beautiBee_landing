@@ -1,0 +1,46 @@
+name: Deploy Beautyzix Landing
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+            set -e
+
+            echo "🚀 Deploying Beautyzix Landing"
+
+            APP_DIR="/var/www/beautyzix/landing/beautiBee_landing"
+
+            cd "$APP_DIR"
+
+            echo "📥 Syncing code from GitHub"
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "📦 Installing dependencies"
+            npm ci
+
+            echo "🏗 Building landing site"
+            npm run build
+
+            echo "🔄 Reloading nginx"
+            systemctl reload nginx
+
+            echo "✅ Beautyzix Landing deployed successfully"
+          EOF
