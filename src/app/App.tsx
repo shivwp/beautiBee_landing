@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { Star, MapPin, Phone, Mail, Calendar, Shield, CreditCard, Clock, Home, Sparkles, ChevronDown, Smartphone, Instagram } from 'lucide-react';
 import beautyAppImage from '@/assets/images/beauty-1.png';
@@ -7,10 +7,41 @@ import appleLogo from '@/assets/images/apple-logo.svg';
 import playStoreLogo from '@/assets/images/play-store.svg';
 import instagramLogo from '@/assets/images/instagram.png';
 
+interface Service {
+  _id: string;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  duration: string;
+  image: string;
+  rating: number;
+  totalReviews: number;
+  isActive: boolean;
+  popularity: number;
+}
+
 export default function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [email, setEmail] = useState('');
   const [activeSection, setActiveSection] = useState<'home' | 'terms' | 'privacy'>('home');
+  const [popularServices, setPopularServices] = useState<Service[]>([]);
+
+  useEffect(() => {
+    const fetchPopularServices = async () => {
+      try {
+        const response = await fetch('https://beautibee-api.webdemozone.com/v1/services/popular?limit=4');
+        const data = await response.json();
+        if (data.success) {
+          setPopularServices(data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching popular services:', error);
+      }
+    };
+
+    fetchPopularServices();
+  }, []);
 
   const features = [
     {
@@ -54,36 +85,7 @@ export default function App() {
     { name: 'Packages', icon: '🎁', services: 'Special Deals' }
   ];
 
-  const popularServices = [
-    {
-      name: 'Bridal Makeup Package',
-      price: '₹5,999',
-      duration: '3 hours',
-      rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1631120629198-777872b283f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWtldXAlMjBhcnRpc3QlMjBhcHBseWluZyUyMGNvc21ldGljc3xlbnwxfHx8fDE3NzAwMDk0NTh8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Hair Spa & Treatment',
-      price: '₹1,299',
-      duration: '90 mins',
-      rating: 4.8,
-      image: 'https://images.unsplash.com/photo-1511920771146-1a7271092231?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYWlyc3R5bGlzdCUyMGN1dHRpbmclMjBoYWlyJTIwc2Fsb258ZW58MXx8fHwxNzY5OTAyNjYxfDA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Luxury Facial Treatment',
-      price: '₹1,899',
-      duration: '60 mins',
-      rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1519415387722-a1c3bbef716c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWF1dHklMjBzYWxvbiUyMHdvbWFuJTIwZmFjaWFsJTIwdHJlYXRtZW50fGVufDF8fHx8MTc3MDAwOTQ1N3ww&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: 'Gel Nail Art',
-      price: '₹999',
-      duration: '45 mins',
-      rating: 4.7,
-      image: 'https://images.unsplash.com/photo-1678164685660-d2758081bf00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuYWlsJTIwYXJ0JTIwbWFuaWN1cmUlMjBwb2xpc2h8ZW58MXx8fHwxNzcwMDA5NDU4fDA&ixlib=rb-4.1.0&q=80&w=1080'
-    }
-  ];
+
 
   const howItWorks = [
     { step: 1, title: 'Download App', description: 'Get the BeautyZix app from App Store or Google Play' },
@@ -786,7 +788,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularServices.map((service, index) => (
               <div
-                key={index}
+                key={service._id || index}
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="relative h-48">
@@ -804,7 +806,7 @@ export default function App() {
                   <h3 className="text-lg mb-2 text-gray-800">{service.name}</h3>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-pink-400 bg-clip-text text-transparent">
-                      {service.price}
+                      ₹{service.price}
                     </span>
                     <span className="text-sm text-gray-600">{service.duration}</span>
                   </div>
