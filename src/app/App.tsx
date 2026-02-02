@@ -789,30 +789,37 @@ export default function App() {
             {popularServices.map((service, index) => (
               <div
                 key={service._id || index}
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 flex flex-col"
               >
-                <div className="relative h-48">
+                <div className="relative h-48 shrink-0">
                   <ImageWithFallback
                     src={service.image}
                     alt={service.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center gap-1">
+                  <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
                     <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                     <span className="text-sm font-semibold">{service.rating}</span>
                   </div>
+                  <div className="absolute top-3 left-3 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-medium">
+                    {service.category}
+                  </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg mb-2 text-gray-800">{service.name}</h3>
-                  <div className="flex items-center justify-between mb-3">
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-lg font-bold mb-1 text-gray-800">{service.name}</h3>
+                  <p className="text-sm text-gray-500 mb-4 line-clamp-2">{service.description}</p>
+                  <div className="flex items-center justify-between mb-4 mt-auto">
                     <span className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-pink-400 bg-clip-text text-transparent">
                       ₹{service.price}
                     </span>
-                    <span className="text-sm text-gray-600">{service.duration}</span>
+                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {service.duration}
+                    </span>
                   </div>
                   <button
                     onClick={scrollToApp}
-                    className="w-full py-2 bg-gradient-to-r from-amber-400 to-pink-400 text-white rounded-xl hover:shadow-lg transition-all duration-300"
+                    className="w-full py-2 bg-gradient-to-r from-amber-400 to-pink-400 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium"
                   >
                     Download App
                   </button>
